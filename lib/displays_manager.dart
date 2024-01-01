@@ -36,8 +36,8 @@ class DisplayManager {
   final _displayMethodChannelId = "presentation_displays_plugin";
   final _displayEventChannelId = "presentation_displays_plugin_events";
 
-  late MethodChannel? _displayMethodChannel;
-  late EventChannel? _displayEventChannel;
+  MethodChannel _displayMethodChannel;
+  EventChannel _displayEventChannel;
 
   DisplayManager() {
     _displayMethodChannel = MethodChannel(_displayMethodChannelId);
@@ -58,7 +58,7 @@ class DisplayManager {
   /// @return An array containing all displays sorted by order of preference.
   ///
   /// See [DISPLAY_CATEGORY_PRESENTATION]
-  Future<List<Display>?> getDisplays({String? category}) async {
+  Future<List<Display>> getDisplays({String category}) async {
     List<dynamic> origins = await jsonDecode((await _displayMethodChannel
             ?.invokeMethod(_listDisplay, category))) ??
         [];
@@ -81,10 +81,10 @@ class DisplayManager {
   ///
   /// @return The display's name.
   /// May be null.
-  Future<String?> getNameByDisplayId(int displayId, {String? category}) async {
+  Future<String> getNameByDisplayId(int displayId, {String category}) async {
     List<Display> displays = await getDisplays(category: category) ?? [];
 
-    String? name;
+    String name;
     for (var element in displays) {
       if (element.displayId == displayId) name = element.name;
     }
@@ -100,9 +100,9 @@ class DisplayManager {
   ///
   /// @return The display's name
   /// May be null.
-  Future<String?> getNameByIndex(int index, {String? category}) async {
+  Future<String> getNameByIndex(int index, {String category}) async {
     List<Display> displays = await getDisplays(category: category) ?? [];
-    String? name;
+    String name;
     if (index >= 0 && index <= displays.length) name = displays[index].name;
     return name;
   }
@@ -116,9 +116,9 @@ class DisplayManager {
   /// </P>
   ///
   /// return [Future<bool>] about the status has been display or not
-  Future<bool?>? showSecondaryDisplay(
-      {required int displayId, required String routerName}) async {
-    return await _displayMethodChannel?.invokeMethod<bool?>(
+  Future<bool> showSecondaryDisplay(
+      {@required int displayId, @required String routerName}) async {
+    return await _displayMethodChannel?.invokeMethod<bool>(
         _showPresentation,
         "{"
         "\"displayId\": $displayId,"
@@ -132,8 +132,8 @@ class DisplayManager {
   /// </P>
   ///
   /// return [Future<bool>] about the status has been display or not
-  Future<bool?>? hideSecondaryDisplay({required int displayId}) async {
-    return await _displayMethodChannel?.invokeMethod<bool?>(
+  Future<bool> hideSecondaryDisplay({@required int displayId}) async {
+    return await _displayMethodChannel?.invokeMethod<bool>(
         _hidePresentation,
         "{"
         "\"displayId\": $displayId"
@@ -192,14 +192,14 @@ class DisplayManager {
   /// </p>
   ///
   /// return [Future<bool>] the value to determine whether or not the data has been transferred successfully
-  Future<bool?>? transferDataToPresentation(dynamic arguments) async {
-    return await _displayMethodChannel?.invokeMethod<bool?>(
+  Future<bool> transferDataToPresentation(dynamic arguments) async {
+    return await _displayMethodChannel?.invokeMethod<bool>(
         _transferDataToPresentation, arguments);
   }
 
   /// Subscribe to the stream to get notifications about connected / disconnected displays
   /// Streams [1] for new connected display and [0] for disconnected display
-  Stream<int?>? get connectedDisplaysChangedStream {
+  Stream<int> get connectedDisplaysChangedStream {
     return _displayEventChannel?.receiveBroadcastStream().cast();
   }
 }

@@ -30,7 +30,7 @@ void secondaryDisplayMain() {
 }
 
 class MySecondApp extends StatelessWidget {
-  const MySecondApp({Key? key}) : super(key: key);
+  const MySecondApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class MySecondApp extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +55,9 @@ class MyApp extends StatelessWidget {
 
 class Button extends StatelessWidget {
   final String title;
-  final VoidCallback? onPressed;
+  final VoidCallback onPressed;
 
-  const Button({Key? key, required this.title, this.onPressed})
+  const Button({Key key, @required this.title, this.onPressed})
       : super(key: key);
 
   @override
@@ -77,7 +77,7 @@ class Button extends StatelessWidget {
 
 /// Main Screen
 class DisplayManagerScreen extends StatefulWidget {
-  const DisplayManagerScreen({Key? key}) : super(key: key);
+  const DisplayManagerScreen({Key key}) : super(key: key);
 
   @override
   _DisplayManagerScreenState createState() => _DisplayManagerScreenState();
@@ -85,7 +85,7 @@ class DisplayManagerScreen extends StatefulWidget {
 
 class _DisplayManagerScreenState extends State<DisplayManagerScreen> {
   DisplayManager displayManager = DisplayManager();
-  List<Display?> displays = [];
+  List<Display> displays = [];
 
   final TextEditingController _indexToShareController = TextEditingController();
   final TextEditingController _dataToTransferController =
@@ -142,7 +142,7 @@ class _DisplayManagerScreenState extends State<DisplayManagerScreen> {
               final values = await displayManager.getDisplays();
               displays.clear();
               setState(() {
-                displays.addAll(values!);
+                displays.addAll(values);
               });
             }),
         ListView.builder(
@@ -181,7 +181,7 @@ class _DisplayManagerScreenState extends State<DisplayManagerScreen> {
         Button(
             title: "Show presentation",
             onPressed: () async {
-              int? displayId = int.tryParse(_indexToShareController.text);
+              int displayId = int.tryParse(_indexToShareController.text);
               if (displayId != null) {
                 for (final display in displays) {
                   if (display?.displayId == displayId) {
@@ -214,7 +214,7 @@ class _DisplayManagerScreenState extends State<DisplayManagerScreen> {
         Button(
             title: "Hide presentation",
             onPressed: () async {
-              int? displayId = int.tryParse(_indexToShareController.text);
+              int displayId = int.tryParse(_indexToShareController.text);
               if (displayId != null) {
                 for (final display in displays) {
                   if (display?.displayId == displayId) {
@@ -272,7 +272,7 @@ class _DisplayManagerScreenState extends State<DisplayManagerScreen> {
         Button(
             title: "NameByDisplayId",
             onPressed: () async {
-              int? id = int.tryParse(_nameOfIdController.text);
+              int id = int.tryParse(_nameOfIdController.text);
               if (id != null) {
                 final value = await displayManager
                     .getNameByDisplayId(displays[id]?.displayId ?? -1);
@@ -308,7 +308,7 @@ class _DisplayManagerScreenState extends State<DisplayManagerScreen> {
         Button(
             title: "NameByIndex",
             onPressed: () async {
-              int? index = int.tryParse(_nameOfIndexController.text);
+              int index = int.tryParse(_nameOfIndexController.text);
               if (index != null) {
                 final value = await displayManager.getNameByIndex(index);
                 setState(() {
@@ -328,7 +328,7 @@ class _DisplayManagerScreenState extends State<DisplayManagerScreen> {
 
 /// UI of Presentation display
 class SecondaryScreen extends StatefulWidget {
-  const SecondaryScreen({Key? key}) : super(key: key);
+  const SecondaryScreen({Key key}) : super(key: key);
 
   @override
   _SecondaryScreenState createState() => _SecondaryScreenState();

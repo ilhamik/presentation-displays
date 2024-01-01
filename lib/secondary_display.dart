@@ -11,7 +11,7 @@ typedef ArgumentsCallback = Function(dynamic arguments);
 /// [SecondaryDisplay.child] child widget of secondary display
 class SecondaryDisplay extends StatefulWidget {
   const SecondaryDisplay(
-      {Key? key, required this.callback, required this.child})
+      {Key key, @required this.callback, @required this.child})
       : super(key: key);
 
   /// instance of [ArgumentsCallback] to receive data transmitted from the [DisplaysManager].
@@ -26,7 +26,7 @@ class SecondaryDisplay extends StatefulWidget {
 
 class _SecondaryDisplayState extends State<SecondaryDisplay> {
   final _presentationChannel = "presentation_displays_plugin_engine";
-  late MethodChannel? _presentationMethodChannel;
+  MethodChannel _presentationMethodChannel;
 
   @override
   void initState() {
